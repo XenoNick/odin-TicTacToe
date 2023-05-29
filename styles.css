@@ -1,0 +1,31 @@
+:root {
+  --board-size: 40rem;
+}
+body {
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+#game-board {
+  height: var(--board-size);
+  width: var(--board-size);
+  background-color: white;
+  display: grid;
+  grid-template: repeat(3, calc(var(--board-size) / 3)) / repeat(
+      3,
+      calc(var(--board-size) / 3)
+    );
+}
+
+.tiles{
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.marker{
+    font-size: 14rem;
+}
