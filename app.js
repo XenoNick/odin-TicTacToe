@@ -1,5 +1,6 @@
 const gameBoard = (() => {
   const board = [];
+  const players = [];
   const getCurrentMarkers = () => [...board];
   const reset = (pieces) => {
     for (let i = 0; i < 9; i++) {
@@ -38,21 +39,26 @@ const displayController = (() => {
   const tiles = [...document.querySelectorAll('.tiles')];
   const markers = [...document.querySelectorAll('.marker')];
 
-//   tiles.forEach((elm) => {
-//     elm.addEventListener('click', ({target}) => {
-        
-//     });
-//   });
-
-  const resetDisplay = () => {
-    gameBoard.reset(null);
-    markers.forEach((elm, index) => {
-      if (gameBoard.getCurrentMarkers()[index] === null) return 0;
-      elm.textContent = gameBoard.getCurrentMarkers()[index];
-      return 1;
+  const enableGame = () => {
+    tiles.forEach((elm) => {
+      elm.addEventListener('click', ({ target }) => {
+        if (target === elm) {
+          const tileText = elm.childNodes[1];
+          if (tileText.textContent !== '') return;
+          console.log('Fired');
+          tileText.textContent = 'X';
+          gameBoard.update(+elm.getAttribute('data-index'), 'X');
+        }
+      });
     });
   };
 
-  resetDisplay();
+  const resetDisplay = () => {
+    gameBoard.reset(null);
+    markers.forEach((elm) => {
+      elm.textContent = '';
+    });
+  };
+
   return { resetDisplay };
 })();

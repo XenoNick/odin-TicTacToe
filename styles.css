@@ -3,11 +3,14 @@
 }
 body {
   height: 100vh;
-  background-color: black;
+  background-color: rgb(88, 88, 88);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 50px;
   align-items: center;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 #game-board {
   height: var(--board-size);
@@ -28,4 +31,63 @@ body {
 }
 .marker{
     font-size: 14rem;
+}
+.hidden{
+  display: none;
+}
+header{
+  background-color: gray;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+#player-menu{
+  position: fixed;
+  top: 171px;
+  background-color: rgb(255, 255, 255);
+  height: 400px;
+  width: 400px;
+  z-index: 1;
+  border: 5px solid black;
+  border-radius: 10px;
+}
+#player-menu form{
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.Pcreate-button{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border: none;
+  border-top: 1px solid rgb(0, 0, 0);
+  height: 58px;
+  background-color: rgb(3, 211, 26);
+  padding: 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 0 0 4px 4px;
+}
+
+.Pcreate-button:hover{
+  background-color: rgb(0, 255, 0);
+  /* outline: 2px solid rgb(0, 255, 0); */
+}
+.player{
+  box-sizing: border-box;
+}
+.player.one{
+  border-radius: 4px 0 0 4px;
+  border-right: 4px dashed black;
+  background-color: #0064ff;
+}
+.player.two{
+  border-radius: 0 4px 4px 0;
+  border-left: 4px dashed black;
+  background-color: #f00;
 }
