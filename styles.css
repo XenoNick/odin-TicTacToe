@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'typewriter';
+  src: url('./fonts/moms_typewriter/momt___-webfont.woff2') format('woff2'),
+    url('./fonts/moms_typewriter/momt___-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 :root {
   --board-size: 40rem;
 }
@@ -23,46 +30,75 @@ body {
     );
 }
 
-.tiles{
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.tiles {
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.marker{
-    font-size: 14rem;
+.marker {
+  font-size: 14rem;
 }
-.hidden{
+.hidden {
   display: none;
 }
-header{
+header {
   background-color: gray;
-  width: 100%;
+  width: 1000px;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+}
+.title{
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
 }
-
-#player-menu{
+.player-score{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 20px;
+}
+.player-score span{
+  font-size: 5rem;
+}
+.title button{
+  padding: 10px 20px;
+  background-color: rgb(0, 171, 0);
+  color: rgb(0, 0, 0);
+  border: 1px solid black;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 1.2rem;
+}
+.title button:hover{
+  background-color: rgb(0, 255, 0);
+  outline: 2px solid black;
+}
+.player-menu {
   position: fixed;
   top: 171px;
   background-color: rgb(255, 255, 255);
-  height: 400px;
   width: 400px;
-  z-index: 1;
+  z-index: 10;
   border: 5px solid black;
   border-radius: 10px;
+  transform: scale(0, 0) translateY(-1282px);
+  transition: transform .3s ease-in;
 }
-#player-menu form{
+.show-menu{
+  transform: scale(1, 1) translateY(0);
+}
+.player-menu form {
   display: flex;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
 
-.Pcreate-button{
-  position: absolute;
-  bottom: 0;
+.Pcreate-button {
   width: 100%;
   border: none;
   border-top: 1px solid rgb(0, 0, 0);
@@ -74,20 +110,57 @@ header{
   border-radius: 0 0 4px 4px;
 }
 
-.Pcreate-button:hover{
+.Pcreate-button:hover {
   background-color: rgb(0, 255, 0);
-  /* outline: 2px solid rgb(0, 255, 0); */
 }
-.player{
+.player {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  padding: 0 0 20px;
+  gap: 10px;
 }
-.player.one{
-  border-radius: 4px 0 0 4px;
+.player div {
+  width: min-content;
+  text-align: center;
+}
+.player input {
+  appearance: none;
+  border: 3px solid rgb(0, 255, 0);
+  background-color: rgb(0, 0, 0);
+  color: white;
+  border-radius: 3px;
+}
+.player input:focus {
+  outline: 2px solid white;
+}
+.player label {
+  font-size: 1.3rem;
+}
+.player h2 {
+  margin: 10px 0 20px;
+}
+.player.one {
+  border-radius: 4px 0 0 0;
   border-right: 4px dashed black;
   background-color: #0064ff;
 }
-.player.two{
-  border-radius: 0 4px 4px 0;
+.player.two {
+  border-radius: 0 4px 0 0;
   border-left: 4px dashed black;
   background-color: #f00;
+}
+.player h2,
+.player label {
+  font-family: 'typewriter';
+}
+
+.p1-score{
+  color: #0053d5;
+}
+
+.p2-score{
+  color: #bd0000;
 }

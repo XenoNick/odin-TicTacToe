@@ -62,3 +62,9 @@ const displayController = (() => {
 
   return { resetDisplay };
 })();
+
+
+document.querySelector('.title button').addEventListener('click', ()=>{
+  const menu = document.querySelector('.player-menu');
+  menu.classList.add('show-menu');
+})
