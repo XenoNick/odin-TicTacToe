@@ -28,6 +28,7 @@ body {
       3,
       calc(var(--board-size) / 3)
     );
+  user-select: none;
 }
 
 .tiles {
@@ -49,22 +50,25 @@ header {
   position: relative;
   justify-content: space-between;
 }
-.title{
+.title {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.player-score{
+.score-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   margin: 0px 20px;
 }
-.player-score span{
+.score-container h2 {
+  font-size: 1.6rem;
+}
+.player-score {
   font-size: 5rem;
 }
-.title button{
+.title button {
   padding: 10px 20px;
   background-color: rgb(0, 171, 0);
   color: rgb(0, 0, 0);
@@ -73,22 +77,22 @@ header {
   border-radius: 10px;
   font-size: 1.2rem;
 }
-.title button:hover{
+.title button:hover {
   background-color: rgb(0, 255, 0);
   outline: 2px solid black;
 }
 .player-menu {
   position: fixed;
-  top: 171px;
+  top: 166px;
   background-color: rgb(255, 255, 255);
   width: 400px;
   z-index: 10;
   border: 5px solid black;
   border-radius: 10px;
   transform: scale(0, 0) translateY(-1282px);
-  transition: transform .3s ease-in;
+  transition: transform 0.3s ease-in;
 }
-.show-menu{
+.show-menu {
   transform: scale(1, 1) translateY(0);
 }
 .player-menu form {
@@ -157,10 +161,15 @@ header {
   font-family: 'typewriter';
 }
 
-.p1-score{
+.p1-score {
   color: #0053d5;
 }
 
-.p2-score{
+.p2-score {
   color: #bd0000;
+}
+
+#p2-marker,
+#p1-marker {
+  width: 1ch;
 }
