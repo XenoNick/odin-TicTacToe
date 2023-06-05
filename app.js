@@ -18,7 +18,17 @@ const gameBoard = (() => {
     }
     board[index] = marker;
   };
-  return { getCurrentMarkers, reset, update };
+  const addPlayers = (...newPlayers) => {
+    const [player1, player2] = newPlayers;
+    if (players[0]) {
+      players.pop();
+      players.pop();
+    }
+    players.push(player1);
+    players.push(player2);
+  };
+  const getPlayers = () => [...players];
+  return { getCurrentMarkers, reset, update, addPlayers, getPlayers };
 })();
 
 const playerCreator = (name, marker) => {
@@ -26,18 +36,36 @@ const playerCreator = (name, marker) => {
   const getName = () => player.name;
   const getMarker = () => player.marker;
   const setMarker = (newMark) => {
-    if (typeof newMark !== 'string' || newMark.length !== 1) {
-      console.log('Not a string or exceeds required length of 1!');
-      return;
-    }
     player.marker = newMark.toUpperCase();
   };
-  return { getName, getMarker, setMarker };
+  const setName = (newName) => {
+    player.name = newName;
+  };
+  return { getName, getMarker, setMarker, setName };
 };
 
 const displayController = (() => {
   const tiles = [...document.querySelectorAll('.tiles')];
   const markers = [...document.querySelectorAll('.marker')];
+  const menu = document.querySelector('.player-menu');
+  const inputs = document.querySelectorAll('input');
+  const button = document.querySelector('.Pcreate-button');
+  const startButton = document.querySelector('.title button');
+  const altButtons = document.querySelectorAll('.alt-buttons');
+  const title = document.querySelector('h1');
+  const exitButton = menu.querySelector('.exit');
+  const currentTurn = null;
+
+  startButton.addEventListener('click', () => {
+    menu.classList.add('show-menu');
+  });
+
+  const checkInputValidity = () => {
+    for (const input of inputs) {
+      if (!input.validity.valid) return false;
+    }
+    return true;
+  };
 
   const activateTiles = function ({ target }) {
     if (target === this) {
@@ -66,10 +94,45 @@ const displayController = (() => {
       elm.removeEventListener('click', activateTiles);
     });
   };
+
+  const setupDisplay = () => {
+    const [player1, player2] = gameBoard.getPlayers();
+    menu.classList.remove('show-menu');
+    resetDisplay();
+    enableGame();
+    title.textContent = `${player1.getName()}s turn!`;
+    document.querySelector('.p1-name').textContent = `${player1.getName()}:`;
+    document.querySelector('.p2-name').textContent = `${player2.getName()}:`;
+    document.querySelectorAll('.player-score')[0].textContent = '0';
+    document.querySelectorAll('.player-score')[1].textContent = '0';
+    if (!startButton.classList.contains('hidden')) {
+      startButton.classList.add('hidden');
+      altButtons.forEach((buttons) => {
+        buttons.classList.remove('hidden');
+      });
+      altButtons[0].addEventListener('click', resetDisplay);
+      altButtons[1].addEventListener('click', () => {
+        disableGame();
+        menu.classList.add('show-menu');
+        if (exitButton.classList.contains('hidden')) {
+          exitButton.classList.remove('hidden');
+          exitButton.addEventListener('click', () => {
+            enableGame();
+            menu.classList.remove('show-menu');
+          });
+        }
+      });
+    }
+  };
+
+  button.addEventListener('click', () => {
+    if (!checkInputValidity()) return;
+    const [p1Name, p1Marker, p2Name, p2Marker] = inputs;
+    const player1 = playerCreator(p1Name.value, p1Marker.value);
+    const player2 = playerCreator(p2Name.value, p2Marker.value);
+    p1Name.value = p2Name.value = p1Marker.value = p2Marker.value = '';
+    gameBoard.addPlayers(player1, player2);
+    setupDisplay();
+  });
   return { enableGame, disableGame, resetDisplay };
 })();
-
-document.querySelector('.title button').addEventListener('click', () => {
-  const menu = document.querySelector('.player-menu');
-  menu.classList.add('show-menu');
-});
