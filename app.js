@@ -32,16 +32,11 @@ const gameBoard = (() => {
 })();
 
 const playerCreator = (name, marker) => {
+  marker = marker.toUpperCase();
   const player = { name, marker };
   const getName = () => player.name;
   const getMarker = () => player.marker;
-  const setMarker = (newMark) => {
-    player.marker = newMark.toUpperCase();
-  };
-  const setName = (newName) => {
-    player.name = newName;
-  };
-  return { getName, getMarker, setMarker, setName };
+  return { getName, getMarker };
 };
 
 const displayController = (() => {
@@ -54,7 +49,7 @@ const displayController = (() => {
   const altButtons = document.querySelectorAll('.alt-buttons');
   const title = document.querySelector('h1');
   const exitButton = menu.querySelector('.exit');
-  const currentTurn = null;
+  let currentTurn = null;
 
   startButton.addEventListener('click', () => {
     menu.classList.add('show-menu');
@@ -67,20 +62,75 @@ const displayController = (() => {
     return true;
   };
 
+  const victoryCheck = (currentPlayer) => {
+    const currBoard = gameBoard.getCurrentMarkers();
+    const winningSets = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    for (let i = 0; i < winningSets.length; i++) {
+      let matches = 0;
+      for (let j = 0; j < winningSets[i].length; j++) {
+        if (currBoard[winningSets[i][j]] === currentPlayer.getMarker()) {
+          matches++;
+        }
+      }
+      if (matches === 3) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const activateTiles = function ({ target }) {
     if (target === this) {
       const tileText = this.childNodes[0];
       if (tileText.textContent !== '') return;
-      tileText.textContent = 'X';
-      gameBoard.update(+this.getAttribute('data-index'), 'X');
+      const [player1, player2] = gameBoard.getPlayers();
+      tileText.textContent = currentTurn.getMarker();
+      gameBoard.update(
+        +this.getAttribute('data-index'),
+        currentTurn.getMarker()
+      );
+      if (victoryCheck(currentTurn)) {
+        title.textContent = `${currentTurn.getName()} wins!`;
+        disableGame();
+        const scores = [...document.querySelectorAll('.score-container')];
+        scores.forEach((score) => {
+          const name = score.children[0].textContent;
+          console.log(name);
+          if (name.slice(0, name.length - 1) === currentTurn.getName()) {
+            score.children[1].textContent = `${
+              +score.children[1].textContent + 1
+            }`;
+          }
+        });
+      } else {
+        if (currentTurn === player1) {
+          currentTurn = player2;
+        } else {
+          currentTurn = player1;
+        }
+        title.textContent = `${currentTurn.getName()}s turn!`;
+      }
     }
   };
 
   const resetDisplay = () => {
+    enableGame();
+    const [player1] = gameBoard.getPlayers();
     gameBoard.reset(null);
     markers.forEach((elm) => {
       elm.textContent = '';
     });
+    currentTurn = player1;
+    title.textContent = `${currentTurn.getName()}s turn!`;
   };
 
   const enableGame = () => {
@@ -132,6 +182,7 @@ const displayController = (() => {
     const player2 = playerCreator(p2Name.value, p2Marker.value);
     p1Name.value = p2Name.value = p1Marker.value = p2Marker.value = '';
     gameBoard.addPlayers(player1, player2);
+    currentTurn = player1;
     setupDisplay();
   });
   return { enableGame, disableGame, resetDisplay };
